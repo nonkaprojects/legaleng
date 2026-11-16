@@ -229,6 +229,9 @@ h1, h2, h3, p { margin: 0; }
 .glossary b { font: 600 16px/1.35 var(--serif); }
 .glossary span { grid-column: 2; font-size: 14px; color: var(--muted); }
 .glossary small { grid-column: 2; font-size: 12px; color: var(--muted); font-style: italic; }
+.glossary.extras li { grid-template-columns: 1fr; }
+.glossary.extras span, .glossary.extras small { grid-column: 1; }
+.extras-hint { margin: -4px 0 14px; font-size: 13px; color: var(--muted); }
 .more { margin-top: 12px; }
 @media (min-width: 900px) {
   /* Тест в одну строку: направление, количество, запуск */

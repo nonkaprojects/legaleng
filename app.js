@@ -164,7 +164,9 @@ function setDocuments(own = []) {
     topics: d.topics.map(t => ({
       ...t,
       doc: d.id,
-      words: t.words.map(w => ({ en: list(w.en), ru: list(w.ru), note: w.note || '', topic: t.id })),
+      // extra: true — дополнительный термин: только в словаре урока, без теста и прогресса
+      words: t.words.filter(w => !w.extra).map(w => ({ en: list(w.en), ru: list(w.ru), note: w.note || '', topic: t.id })),
+      extras: t.words.filter(w => w.extra).map(w => ({ en: list(w.en), ru: list(w.ru), note: w.note || '' })),
     })),
   }));
   TOPICS = DOCUMENTS.flatMap(d => d.topics);
@@ -1009,6 +1011,17 @@ function showTopic(id) {
           <ul class="glossary" id="glossary">${t.words.slice(0, GLOSSARY_CAP).map(glossRow).join('')}</ul>
           ${t.words.length > GLOSSARY_CAP ? `<button class="btn small more" id="more">Показать все ${t.words.length}</button>` : ''}
         </section>
+        ${t.extras && t.extras.length ? `
+        <section class="panel span-12">
+          <div class="panel-head"><h2>Дополнительно</h2><span class="chip">${t.extras.length}</span></div>
+          <p class="extras-hint">Полезно знать. В тест и прогресс не входит.</p>
+          <ul class="glossary extras">${t.extras.map(w => `
+            <li>
+              <b lang="en">${esc(w.en.join(' / '))}</b>
+              <span>${esc(w.ru.join('; '))}</span>
+              ${w.note ? `<small>${esc(w.note)}</small>` : ''}
+            </li>`).join('')}</ul>
+        </section>` : ''}
       </div>
     </main>`, { tab: 'home' });
 
